@@ -6,6 +6,12 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/**
+ * Maze Solving algorithm. Takes a valid maze input from Standard.in and prints
+ * the shortest path to the target cell if it is possible.
+ * @author Caleb Willson
+ * @version 1.0
+ */
 public class MazeSolver {
     public static void main(String[] args) {
         String inFileName = "project5_maze.in";
@@ -26,6 +32,7 @@ public class MazeSolver {
             return;
         }
         
+        // load the maze into the 2d maze array
         row = scan.nextInt();
         col = scan.nextInt();
         maze = new Location[row][col];
@@ -42,6 +49,7 @@ public class MazeSolver {
 
         scan.close();
 
+        // scan the maze until the queue is empty
         while (!pathQueue.isEmpty()) {
             Location currCell = pathQueue.remove();
 
@@ -53,9 +61,9 @@ public class MazeSolver {
             int x = currCell.getCoord().getX();
             int y = currCell.getCoord().getY();
 
+            // check right neighbor
             if (x + 1 < col && 
                 maze[y][x + 1].isScanned() == false &&
-                maze[y][x + 1].getPrevLocation() == null &&
                 maze[y][x + 1].getType() != 'X') 
             {
                 maze[y][x + 1].setDist(currCell.getDist() + 1);
@@ -63,9 +71,9 @@ public class MazeSolver {
                 pathQueue.add(maze[y][x + 1]);
             }
 
+            // check left neighbor
             if (x - 1 >= 0 && 
                 maze[y][x - 1].isScanned() == false &&
-                maze[y][x - 1].getPrevLocation() == null &&
                 maze[y][x - 1].getType() != 'X') 
             {
                 maze[y][x - 1].setDist(currCell.getDist() + 1);
@@ -73,9 +81,9 @@ public class MazeSolver {
                 pathQueue.add(maze[y][x - 1]);
             }
 
+            // check lower neighbor
             if (y + 1 < row && 
                 maze[y + 1][x].isScanned() == false &&
-                maze[y + 1][x].getPrevLocation() == null &&
                 maze[y + 1][x].getType() != 'X') 
             {
                 maze[y + 1][x].setDist(currCell.getDist() + 1);
@@ -83,9 +91,9 @@ public class MazeSolver {
                 pathQueue.add(maze[y + 1][x]);
             }
 
+            // check upper neighbor
             if (y - 1 >= 0 && 
                 maze[y - 1][x].isScanned() == false &&
-                maze[y - 1][x].getPrevLocation() == null &&
                 maze[y - 1][x].getType() != 'X') 
             {
                 maze[y - 1][x].setDist(currCell.getDist() + 1);
@@ -96,6 +104,7 @@ public class MazeSolver {
             maze[y][x].setScanned(true);
         }
 
+        // print the path if it was solved
         if (target != null) {
             target.printCoords();
         }
